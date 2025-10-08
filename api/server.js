@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rota para criar preferência de pagamento
-app.post('/api/create-preference', async (req, res) => {
+app.post('/create-preference', async (req, res) => {
     try {
         const { title, unit_price, quantity = 1, description, plan_type } = req.body;
 
@@ -90,7 +90,7 @@ app.post('/api/create-preference', async (req, res) => {
 });
 
 // Webhook para receber notificações do Mercado Pago
-app.post('/api/webhook', async (req, res) => {
+app.post('/webhook', async (req, res) => {
     try {
         const { type, data } = req.body;
 
@@ -226,7 +226,7 @@ async function sendRejectionNotification(paymentData) {
 }
 
 // Rota de status da API
-app.get('/api/status', (req, res) => {
+app.get('/status', (req, res) => {
     res.json({
         status: 'online',
         timestamp: new Date().toISOString(),
@@ -235,7 +235,7 @@ app.get('/api/status', (req, res) => {
 });
 
 // Rota para consultar pagamento
-app.get('/api/payment/:id', async (req, res) => {
+app.get('/payment/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const payment = await mercadopago.payment.findById(id);
@@ -262,11 +262,6 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
-    console.log(`📊 Status: http://localhost:${PORT}/api/status`);
-    console.log(`💳 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-});
-
+// Nota: este arquivo exporta o `app` sem chamar `listen()` para permitir
+// que ele seja montado por um servidor principal (ex: ../server.js).
 module.exports = app;
