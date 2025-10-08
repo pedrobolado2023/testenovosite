@@ -173,6 +173,28 @@ git push origin main
 ### Deploy Automático
 O deploy é automático via GitHub Actions. Toda alteração na branch `main` dispara o deploy.
 
+## 🧰 Como rodar localmente (API + Frontend)
+
+Instale dependências e rode o servidor API e o servidor de arquivos estáticos.
+
+No Powershell (Windows):
+
+```powershell
+# Instalar dependências
+npm install
+
+# Rodar apenas o servidor principal (serve arquivos estáticos e endpoints em server.js)
+npm start
+
+# Rodar apenas a API (arquivo api/server.js)
+npm run start:api
+
+# Rodar ambos simultaneamente (modo de desenvolvimento)
+npm run dev:full
+```
+
+Observação: o endpoint da API que o checkout chama é `/api/create-preference`. Se você usa o servidor principal (`npm start`) ele já expõe esse endpoint (quando o Mercado Pago SDK estiver configurado). Caso prefira separar, a API em `api/server.js` expõe o mesmo endpoint na porta `3001` por padrão.
+
 ## 📊 Analytics e Tracking
 
 O site inclui funções para:

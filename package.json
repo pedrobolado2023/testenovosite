@@ -5,6 +5,8 @@
   "main": "index.html",
   "scripts": {
     "start": "node server.js",
+    "start:api": "node api/server.js",
+    "dev:full": "npx concurrently \"npm:start\" \"npm:run start:api\"",
     "validate": "npm run validate:html || true && npm run validate:css || true && npm run validate:js || true",
     "validate:html": "npx html-validate index.html",
     "validate:css": "npx stylelint \"*.css\"",
@@ -37,7 +39,8 @@
     "html-validate": "^8.0.0",
     "live-server": "^1.2.2",
     "stylelint": "^15.0.0",
-    "stylelint-config-standard": "^34.0.0"
+    "stylelint-config-standard": "^34.0.0",
+    "concurrently": "^8.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
