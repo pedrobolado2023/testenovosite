@@ -14,7 +14,7 @@
 
 ```javascript
 // Linha 4 do script.js
-const MP_PUBLIC_KEY = 'APP_USR-sua-chave-publica-aqui';
+const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035';
 ```
 
 ### 3. Configurar Backend (OBRIGATÓRIO)
@@ -39,7 +39,7 @@ Crie estas rotas no seu backend:
 <?php
 require_once 'vendor/autoload.php';
 
-MercadoPago\SDK::setAccessToken('SEU_ACCESS_TOKEN');
+MercadoPago\SDK::setAccessToken('APP_USR-778407631893036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015');
 
 $preference = new MercadoPago\Preference();
 $item = new MercadoPago\Item();
@@ -98,7 +98,7 @@ Substitua no código:
 
 ```javascript
 // Em script.js - função createPaymentPreference
-const response = await fetch('https://SEU-BACKEND.com/api/create-preference', {
+const response = await fetch('https://estude.q-aura.com.br/api/create-preference', {
     // ...
 });
 ```
@@ -106,9 +106,9 @@ const response = await fetch('https://SEU-BACKEND.com/api/create-preference', {
 ```javascript
 // URLs de retorno no backend
 back_urls: {
-    success: 'https://SEU-SITE.com/sucesso',
-    failure: 'https://SEU-SITE.com/falha',
-    pending: 'https://SEU-SITE.com/pendente'
+    success: 'https://estude.q-aura.com.br/sucesso',
+    failure: 'https://estude.q-aura.com.br/falha',
+    pending: 'https://estude.q-aura.com.br/pendente'
 }
 ```
 

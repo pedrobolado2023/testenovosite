@@ -1,6 +1,6 @@
 // Configuração do Mercado Pago
 // IMPORTANTE: Substitua pela sua Public Key do Mercado Pago
-const MP_PUBLIC_KEY = 'TEST-your-public-key-here'; // Coloque sua chave pública aqui
+const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035'; // Coloque sua chave pública aqui
 
 // Inicialização do Mercado Pago
 let mp;
@@ -240,7 +240,7 @@ async function createCheckout(plano) {
             <div class="checkout-error">
                 <p>Não foi possível carregar o sistema de pagamento.</p>
                 <p>Entre em contato conosco pelo WhatsApp:</p>
-                <a href="https://wa.me/5511999999999?text=Quero assinar o ${plano.name}" 
+                <a href="https://wa.me/5562993473656?text=Quero assinar o ${plano.name}" 
                    class="btn btn-primary" target="_blank">
                     <i class="fab fa-whatsapp"></i>
                     Contatar via WhatsApp
