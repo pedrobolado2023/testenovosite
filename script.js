@@ -1,6 +1,6 @@
-// Configuração do Mercado Pago
-// IMPORTANTE: Substitua pela sua Public Key do Mercado Pago
-const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035'; // Coloque sua chave pública aqui
+// Configuração do Mercado Pago com chave pública de produção
+// CHAVE PÚBLICA - Pode ficar exposta no frontend
+const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035';
 
 // Inicialização do Mercado Pago
 let mp;

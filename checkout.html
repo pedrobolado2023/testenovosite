@@ -327,8 +327,8 @@
     </div>
 
     <script>
-        // Configuração do Mercado Pago
-        const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035'; // Substitua pela sua chave
+        // Configuração do Mercado Pago com sua chave pública de produção
+        const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035';
 
         let mp;
         let checkout;
@@ -340,45 +340,52 @@
 
         async function initializeCheckout() {
             try {
+                console.log('Inicializando checkout com Mercado Pago...');
+                
                 // Inicializar Mercado Pago
                 if (typeof MercadoPago !== 'undefined') {
                     mp = new MercadoPago(MP_PUBLIC_KEY, {
                         locale: 'pt-BR'
                     });
-                    console.log('Mercado Pago inicializado');
+                    console.log('Mercado Pago inicializado com sucesso');
                 } else {
                     throw new Error('SDK do Mercado Pago não carregado');
                 }
 
                 // Criar preferência de pagamento
+                console.log('Criando preferência de pagamento...');
                 const preference = await createPaymentPreference();
                 
                 if (preference && preference.id) {
-                    // Criar checkout
+                    console.log('Preferência criada:', preference.id);
+                    
+                    // Limpar container de loading
                     const checkoutContainer = document.getElementById('mercadopago-container');
                     checkoutContainer.innerHTML = '';
 
+                    // Criar checkout com configurações avançadas
                     checkout = mp.checkout({
                         preference: {
                             id: preference.id
                         },
-                        autoOpen: false
+                        render: {
+                            container: '#mercadopago-container',
+                            label: 'Pagar Assinatura Q-aura',
+                        },
+                        theme: {
+                            elementsColor: '#2ecc71',
+                            headerColor: '#2ecc71'
+                        }
                     });
 
-                    // Renderizar checkout
-                    checkout.render({
-                        container: '#mercadopago-container',
-                        label: 'Pagar Assinatura Q-aura'
-                    });
-
-                    console.log('Checkout renderizado com sucesso');
+                    console.log('Checkout renderizado com sucesso - Formas de pagamento disponíveis');
                 } else {
-                    throw new Error('Erro ao criar preferência');
+                    throw new Error('Erro ao criar preferência de pagamento');
                 }
 
             } catch (error) {
                 console.error('Erro ao inicializar checkout:', error);
-                showCheckoutError();
+                showCheckoutError(error.message);
             }
         }
 
@@ -410,20 +417,26 @@
             }
         }
 
-        function showCheckoutError() {
+        function showCheckoutError(errorMessage = 'Erro desconhecido') {
             const container = document.getElementById('mercadopago-container');
             container.innerHTML = `
                 <div class="checkout-error">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px;"></i>
-                    <h3>Erro ao carregar pagamento</h3>
-                    <p>Não foi possível carregar o sistema de pagamento.</p>
+                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px; color: #e74c3c;"></i>
+                    <h3>Erro ao carregar formas de pagamento</h3>
+                    <p><strong>Detalhes:</strong> ${errorMessage}</p>
+                    <p>Não foi possível carregar PIX e cartão de crédito.</p>
                     <p>Entre em contato conosco pelo WhatsApp para finalizar sua assinatura:</p>
-                    <a href="https://wa.me/5562993473656?text=Quero assinar o Q-aura por R$ 9,90/mês" 
+                    <a href="https://wa.me/5562993473656?text=Olá! Quero assinar o Q-aura por R$ 9,90/mês. Tive problema no checkout do site." 
                        target="_blank" 
                        style="display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: white; padding: 15px 25px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-weight: 500;">
                         <i class="fab fa-whatsapp"></i>
                         Finalizar pelo WhatsApp
                     </a>
+                    <br><br>
+                    <button onclick="initializeCheckout()" 
+                            style="background: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                        <i class="fas fa-redo"></i> Tentar Novamente
+                    </button>
                 </div>
             `;
         }

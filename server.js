@@ -1,9 +1,15 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const mercadopago = require('mercadopago');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Configurar Mercado Pago com sua credencial de produção
+mercadopago.configure({
+    access_token: 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015'
+});
 
 // Middlewares
 app.use(cors());
@@ -57,11 +63,6 @@ app.post('/api/create-preference', async (req, res) => {
             });
         }
 
-        // IMPORTANTE: Para produção, instale o SDK do Mercado Pago
-        // npm install mercadopago
-        // const mercadopago = require('mercadopago');
-        // mercadopago.configure({ access_token: 'SEU_ACCESS_TOKEN' });
-
         // Estrutura da preferência para Checkout Pro
         const preferenceData = {
             items: [
@@ -75,7 +76,7 @@ app.post('/api/create-preference', async (req, res) => {
                 }
             ],
             payer: {
-                email: 'test@mercadopago.com' // Em produção, capture do formulário
+                email: 'cliente@email.com' // Em produção, capture do formulário
             },
             back_urls: {
                 success: `${req.protocol}://${req.get('host')}/sucesso`,
@@ -89,37 +90,27 @@ app.post('/api/create-preference', async (req, res) => {
                 installments: 12
             },
             notification_url: `${req.protocol}://${req.get('host')}/api/webhook`,
-            external_reference: `order_${Date.now()}`,
-            expires: false
+            external_reference: `qaura_${Date.now()}`,
+            expires: false,
+            statement_descriptor: 'Q-AURA ESTUDOS'
         };
 
-        // Em produção, use este código:
-        /*
+        console.log('Criando preferência real do Mercado Pago:', {
+            title,
+            price: unit_price,
+            plan: plan_type
+        });
+
+        // Criar preferência real usando o SDK
         const preference = await mercadopago.preferences.create(preferenceData);
         
+        console.log('Preferência criada com sucesso:', preference.body.id);
+
         res.json({
             id: preference.body.id,
             init_point: preference.body.init_point,
             sandbox_init_point: preference.body.sandbox_init_point
         });
-        */
-
-        // Por enquanto, simulação para demonstração
-        const mockPreference = {
-            id: `preference-${Date.now()}`,
-            init_point: `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=demo-${Date.now()}`,
-            sandbox_init_point: `https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=demo-${Date.now()}`
-        };
-
-        console.log('Preferência Checkout Pro criada:', {
-            title,
-            price: unit_price,
-            plan: plan_type,
-            timestamp: new Date().toISOString(),
-            preference_id: mockPreference.id
-        });
-
-        res.json(mockPreference);
     } catch (error) {
         console.error('Erro ao criar preferência:', error);
         res.status(500).json({ 
@@ -129,15 +120,47 @@ app.post('/api/create-preference', async (req, res) => {
     }
 });
 
-// Webhook do Mercado Pago
-app.post('/api/webhook', (req, res) => {
+// Webhook do Mercado Pago para processar notificações de pagamento
+app.post('/api/webhook', async (req, res) => {
     try {
         const { type, data } = req.body;
         
-        console.log('Webhook recebido:', { type, data, timestamp: new Date().toISOString() });
+        console.log('Webhook recebido:', { 
+            type, 
+            data, 
+            timestamp: new Date().toISOString(),
+            headers: req.headers
+        });
         
-        // Aqui você processaria o webhook real
-        // Por enquanto, apenas loga a informação
+        // Processar notificação de pagamento
+        if (type === 'payment') {
+            try {
+                // Buscar informações do pagamento
+                const payment = await mercadopago.payment.findById(data.id);
+                
+                console.log('Pagamento processado:', {
+                    id: payment.body.id,
+                    status: payment.body.status,
+                    amount: payment.body.transaction_amount,
+                    email: payment.body.payer.email,
+                    external_reference: payment.body.external_reference
+                });
+
+                // Aqui você pode:
+                // 1. Atualizar banco de dados
+                // 2. Enviar email de confirmação
+                // 3. Ativar acesso no sistema
+                // 4. Enviar mensagem via WhatsApp API
+                
+                if (payment.body.status === 'approved') {
+                    console.log('💚 Pagamento APROVADO! Ativar acesso ao Q-aura');
+                    // Implementar lógica de ativação aqui
+                }
+                
+            } catch (error) {
+                console.error('Erro ao processar pagamento:', error);
+            }
+        }
         
         res.status(200).send('OK');
     } catch (error) {
