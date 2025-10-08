@@ -335,72 +335,43 @@
 
         // Inicializar quando a página carregar
         document.addEventListener('DOMContentLoaded', function() {
-            // Timeout para forçar fallback se demorar muito
-            setTimeout(() => {
-                const container = document.getElementById('mercadopago-container');
-                if (container && container.querySelector('.loading-checkout')) {
-                    console.log('⏰ Timeout atingido - forçando checkout simulado');
-                    showSimulatedCheckout();
-                }
-            }, 5000); // 5 segundos
-            
+            console.log('🚀 Iniciando checkout 100% REAL...');
             initializeCheckout();
         });
 
         async function initializeCheckout() {
             try {
-                console.log('Inicializando checkout com Mercado Pago...');
-                
-                // Timeout para evitar carregamento infinito
-                const timeoutPromise = new Promise((_, reject) => {
-                    setTimeout(() => reject(new Error('Timeout: Carregamento demorou mais que 8 segundos')), 8000);
-                });
+                console.log('Inicializando checkout REAL com Mercado Pago...');
                 
                 // Inicializar Mercado Pago
                 if (typeof MercadoPago !== 'undefined') {
                     mp = new MercadoPago(MP_PUBLIC_KEY, {
                         locale: 'pt-BR'
                     });
-                    console.log('Mercado Pago inicializado com sucesso');
+                    console.log('✅ Mercado Pago inicializado com sucesso');
                 } else {
                     throw new Error('SDK do Mercado Pago não carregado');
                 }
 
-                // Criar preferência com timeout
-                console.log('Criando preferência de pagamento...');
-                
-                const preferencePromise = createPaymentPreference();
-                const preference = await Promise.race([preferencePromise, timeoutPromise]);
+                // Criar preferência real
+                console.log('🔄 Criando preferência REAL de pagamento...');
+                const preference = await createPaymentPreference();
                 
                 if (preference && preference.id) {
-                    console.log('Preferência criada:', preference.id);
-                    
-                    // FORÇAR checkout simulado por enquanto para resolver o problema
-                    console.log('🎭 Forçando checkout simulado para evitar travamento');
-                    showSimulatedCheckout();
-                    return;
-                    
-                    // TODO: Código real comentado até resolver problema do MP
-                    /*
-                    // Verificar se é preferência real ou simulada
-                    if (preference.mock || preference.status === 'simulated') {
-                        console.log('⚠️ Preferência simulada - mostrando checkout alternativo');
-                        showSimulatedCheckout();
-                        return;
-                    }
+                    console.log('✅ Preferência REAL criada:', preference.id);
                     
                     // Limpar container de loading
                     const checkoutContainer = document.getElementById('mercadopago-container');
                     checkoutContainer.innerHTML = '';
 
-                    // Criar checkout com configurações avançadas
+                    // Criar checkout REAL do Mercado Pago
                     checkout = mp.checkout({
                         preference: {
                             id: preference.id
                         },
                         render: {
                             container: '#mercadopago-container',
-                            label: 'Pagar Assinatura Q-aura',
+                            label: 'Finalizar Pagamento',
                         },
                         theme: {
                             elementsColor: '#2ecc71',
@@ -408,16 +379,14 @@
                         }
                     });
 
-                    console.log('Checkout renderizado com sucesso - Formas de pagamento disponíveis');
-                    */
+                    console.log('✅ Checkout REAL renderizado - PIX e Cartão disponíveis!');
                 } else {
                     throw new Error('Erro ao criar preferência de pagamento');
                 }
 
             } catch (error) {
-                console.error('Erro ao inicializar checkout:', error.message);
-                console.log('🔄 Ativando checkout simulado devido ao erro');
-                showSimulatedCheckout();
+                console.error('❌ Erro ao inicializar checkout REAL:', error.message);
+                showCheckoutError(error.message);
             }
         }
                     checkoutContainer.innerHTML = '';
@@ -465,72 +434,14 @@
             }
         }
 
-        function showSimulatedCheckout() {
-            const container = document.getElementById('mercadopago-container');
-            container.innerHTML = `
-                <div style="background: #f8f9fa; border: 2px dashed #2ecc71; border-radius: 12px; padding: 30px; text-align: center;">
-                    <div style="background: #2ecc71; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h3 style="margin: 0; font-size: 18px;">💳 Formas de Pagamento Disponíveis</h3>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px;">
-                        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
-                            <div style="font-size: 32px; margin-bottom: 10px;">🔵</div>
-                            <strong>PIX</strong><br>
-                            <span style="color: #666; font-size: 14px;">Pagamento instantâneo</span>
-                        </div>
-                        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
-                            <div style="font-size: 32px; margin-bottom: 10px;">💳</div>
-                            <strong>Cartão</strong><br>
-                            <span style="color: #666; font-size: 14px;">Até 12x sem juros</span>
-                        </div>
-                    </div>
-                    
-                    <p style="color: #666; margin-bottom: 20px;">
-                        ⚠️ <strong>Modo de Demonstração Ativo</strong><br>
-                        Para finalizar sua assinatura real, entre em contato via WhatsApp:
-                    </p>
-                    
-                    <a href="https://wa.me/5562993473656?text=Olá! Quero finalizar minha assinatura do Q-aura por R$ 9,90/mês. Vi o checkout no site." 
-                       target="_blank" 
-                       style="display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: white; padding: 15px 25px; border-radius: 8px; text-decoration: none; font-weight: 500; margin-bottom: 15px;">
-                        <i class="fab fa-whatsapp"></i>
-                        Finalizar Assinatura pelo WhatsApp
-                    </a>
-                    
-                    <br>
-                    
-                    <button onclick="simulatePayment()" 
-                            style="background: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 500;">
-                        🎭 Simular Pagamento (Teste)
-                    </button>
-                </div>
-            `;
-        }
-
-        function simulatePayment() {
-            // Simular processamento
-            const container = document.getElementById('mercadopago-container');
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <div style="font-size: 64px; margin-bottom: 20px;">⏳</div>
-                    <h3>Processando pagamento simulado...</h3>
-                    <p>Aguarde 3 segundos...</p>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                window.location.href = '/sucesso';
-            }, 3000);
-        }
+        function showCheckoutError(errorMessage) {
             const container = document.getElementById('mercadopago-container');
             container.innerHTML = `
                 <div class="checkout-error">
                     <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px; color: #e74c3c;"></i>
                     <h3>Erro ao carregar formas de pagamento</h3>
                     <p><strong>Detalhes:</strong> ${errorMessage}</p>
-                    <p>Não foi possível carregar PIX e cartão de crédito.</p>
-                    <p>Entre em contato conosco pelo WhatsApp para finalizar sua assinatura:</p>
+                    <p>Tente novamente ou entre em contato pelo WhatsApp:</p>
                     <a href="https://wa.me/5562993473656?text=Olá! Quero assinar o Q-aura por R$ 9,90/mês. Tive problema no checkout do site." 
                        target="_blank" 
                        style="display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: white; padding: 15px 25px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-weight: 500;">
@@ -544,6 +455,7 @@
                     </button>
                 </div>
             `;
+        }
 
         // Função para voltar ao site
         function goBack() {

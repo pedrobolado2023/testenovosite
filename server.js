@@ -17,16 +17,15 @@ try {
     mpClient = new MercadoPagoConfig({ 
         accessToken: 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015',
         options: {
-            timeout: 5000,
-            idempotencyKey: 'abc'
+            timeout: 10000
         }
     });
     
     preferenceAPI = new Preference(mpClient);
-    console.log('✅ Mercado Pago SDK inicializado');
+    console.log('✅ Mercado Pago SDK v2 inicializado em PRODUÇÃO');
 } catch (error) {
-    console.log('⚠️ Erro ao inicializar MP SDK:', error.message);
-    console.log('🔄 Usando modo fallback');
+    console.log('❌ Erro ao inicializar MP SDK:', error.message);
+    console.log('⚠️ Checkout não funcionará sem MP SDK');
 }
 
 // Middlewares
@@ -65,16 +64,17 @@ app.get('/health', (req, res) => {
     res.json({ 
         status: 'OK', 
         timestamp: new Date().toISOString(),
-        message: 'WhatsApp Premium Site is running'
+        message: 'Q-aura Site is running',
+        mercadopago: preferenceAPI ? 'Connected' : 'Disconnected'
     });
 });
 
-// API para criar preferência do Mercado Pago (Checkout Pro)
+// API para criar preferência do Mercado Pago (Checkout Pro) - 100% REAL
 app.post('/api/create-preference', async (req, res) => {
     try {
         const { title, unit_price, quantity = 1, description, plan_type } = req.body;
 
-        console.log('🔄 Recebida solicitação de preferência:', {
+        console.log('🔄 Recebida solicitação de preferência REAL:', {
             title,
             unit_price,
             quantity,
@@ -90,19 +90,30 @@ app.post('/api/create-preference', async (req, res) => {
             });
         }
 
-        // Estrutura da preferência para Checkout Pro
+        // Verificar se MP está disponível
+        if (!preferenceAPI) {
+            console.log('❌ SDK do Mercado Pago não disponível');
+            return res.status(500).json({ 
+                error: 'Serviço de pagamento indisponível',
+                message: 'Entre em contato via WhatsApp para finalizar'
+            });
+        }
+
+        // Estrutura da preferência para Checkout Pro REAL
         const preferenceData = {
             items: [
                 {
                     id: plan_type || 'qaura-plan',
                     title: title,
-                    description: description || 'Assinatura Q-aura',
+                    description: description || 'Assinatura Q-aura - Sistema de Estudos para Concursos',
                     quantity: parseInt(quantity),
                     currency_id: 'BRL',
                     unit_price: parseFloat(unit_price)
                 }
             ],
             payer: {
+                name: 'Cliente',
+                surname: 'Q-aura',
                 email: 'cliente@qaura.com.br'
             },
             back_urls: {
@@ -122,51 +133,31 @@ app.post('/api/create-preference', async (req, res) => {
             statement_descriptor: 'Q-AURA ESTUDOS'
         };
 
-        console.log('🔄 Criando preferência no Mercado Pago...');
+        console.log('🔄 Criando preferência REAL no Mercado Pago...');
         console.log('📋 Dados da preferência:', JSON.stringify(preferenceData, null, 2));
 
-        // Tentar criar preferência real primeiro
-        if (preferenceAPI) {
-            try {
-                console.log('🔄 Tentando API real do Mercado Pago...');
-                const response = await preferenceAPI.create({
-                    body: preferenceData
-                });
-                
-                console.log('✅ Preferência REAL criada com sucesso!');
-                console.log('🆔 ID da preferência:', response.id);
-
-                return res.json({
-                    id: response.id,
-                    init_point: response.init_point,
-                    sandbox_init_point: response.sandbox_init_point,
-                    status: 'real'
-                });
-
-            } catch (mpError) {
-                console.error('❌ Erro na API do Mercado Pago:', mpError);
-                console.log('� Fallback para modo simulado...');
-            }
-        }
-
-        // Fallback: Preferência simulada que funciona
-        console.log('🎭 Criando preferência simulada...');
-        const mockPreference = {
-            id: `qaura_sim_${Date.now()}`,
-            init_point: '#',
-            sandbox_init_point: '#',
-            status: 'simulated',
-            mock: true
-        };
-
-        console.log('✅ Preferência simulada criada:', mockPreference.id);
+        // Criar preferência REAL no Mercado Pago
+        const response = await preferenceAPI.create({
+            body: preferenceData
+        });
         
-        res.json(mockPreference);
+        console.log('✅ Preferência REAL criada com sucesso!');
+        console.log('🆔 ID da preferência:', response.id);
+        console.log('🔗 Link de pagamento:', response.init_point);
+
+        return res.json({
+            id: response.id,
+            init_point: response.init_point,
+            sandbox_init_point: response.sandbox_init_point,
+            status: 'production'
+        });
+
     } catch (error) {
-        console.error('Erro ao criar preferência:', error);
+        console.error('❌ Erro ao criar preferência REAL:', error);
         res.status(500).json({ 
-            error: 'Erro interno do servidor',
-            message: 'Tente novamente ou entre em contato via WhatsApp'
+            error: 'Erro ao processar pagamento',
+            message: 'Tente novamente ou entre em contato via WhatsApp',
+            details: error.message
         });
     }
 });
@@ -176,7 +167,7 @@ app.post('/api/webhook', async (req, res) => {
     try {
         const { type, data } = req.body;
         
-        console.log('Webhook recebido:', { 
+        console.log('📬 Webhook recebido:', { 
             type, 
             data, 
             timestamp: new Date().toISOString(),
@@ -186,14 +177,13 @@ app.post('/api/webhook', async (req, res) => {
         // Processar notificação de pagamento
         if (type === 'payment') {
             try {
-                // Com a nova API v2, use Payment class
                 const { Payment } = require('mercadopago');
-                const payment = new Payment(client);
+                const payment = new Payment(mpClient);
                 
                 // Buscar informações do pagamento
                 const paymentInfo = await payment.get({ id: data.id });
                 
-                console.log('Pagamento processado:', {
+                console.log('💰 Pagamento processado:', {
                     id: paymentInfo.id,
                     status: paymentInfo.status,
                     amount: paymentInfo.transaction_amount,
@@ -203,24 +193,24 @@ app.post('/api/webhook', async (req, res) => {
 
                 if (paymentInfo.status === 'approved') {
                     console.log('💚 Pagamento APROVADO! Ativar acesso ao Q-aura');
-                    // Implementar lógica de ativação aqui
+                    // TODO: Implementar lógica de ativação aqui
+                    // Enviar email, criar acesso, notificar via WhatsApp, etc.
                 }
                 
             } catch (error) {
-                console.error('Erro ao processar pagamento:', error);
+                console.error('❌ Erro ao processar pagamento:', error);
             }
         }
         
         res.status(200).send('OK');
     } catch (error) {
-        console.error('Erro no webhook:', error);
+        console.error('❌ Erro no webhook:', error);
         res.status(500).send('Erro interno');
     }
 });
 
 // Middleware para lidar com rotas não encontradas
 app.use((req, res) => {
-    // Se for uma requisição para uma página, redireciona para home
     if (req.accepts('html')) {
         res.redirect('/');
     } else {
@@ -230,7 +220,7 @@ app.use((req, res) => {
 
 // Middleware de tratamento de erros
 app.use((error, req, res, next) => {
-    console.error('Erro global:', error);
+    console.error('❌ Erro global:', error);
     res.status(500).json({
         error: 'Erro interno do servidor',
         message: 'Tente novamente mais tarde'
@@ -239,11 +229,12 @@ app.use((error, req, res, next) => {
 
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Servidor WhatsApp Premium rodando na porta ${PORT}`);
+    console.log(`🚀 Servidor Q-aura rodando na porta ${PORT}`);
     console.log(`📱 Site: http://localhost:${PORT}`);
     console.log(`💳 API: http://localhost:${PORT}/api`);
     console.log(`📊 Health: http://localhost:${PORT}/health`);
-    console.log(`🌐 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🌐 Ambiente: ${process.env.NODE_ENV || 'production'}`);
+    console.log(`💰 Mercado Pago: ${preferenceAPI ? 'CONECTADO' : 'DESCONECTADO'}`);
 });
 
 // Graceful shutdown
