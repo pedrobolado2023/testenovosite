@@ -4,7 +4,7 @@
   "description": "Site de vendas para sistema WhatsApp Premium com integração Mercado Pago",
   "main": "index.html",
   "scripts": {
-    "start": "npx live-server --port=3000 --open=/index.html",
+    "start": "node server.js",
     "validate": "npm run validate:html || true && npm run validate:css || true && npm run validate:js || true",
     "validate:html": "npx html-validate index.html",
     "validate:css": "npx stylelint \"*.css\"",

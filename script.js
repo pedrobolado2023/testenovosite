@@ -257,7 +257,7 @@ async function createPaymentPreference(plano) {
     
     // Esta é uma simulação - substitua pela sua implementação real
     try {
-        const response = await fetch('https://estude.q-aura.com.br/api/create-preference', {
+        const response = await fetch('/api/create-preference', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
