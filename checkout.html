@@ -327,8 +327,8 @@
     </div>
 
     <script>
-        // Configuração do Mercado Pago com sua chave pública de produção
-        const MP_PUBLIC_KEY = 'APP_USR-1ce19553-fcdd-469b-9e00-2bdf113f1035';
+        // Configuração do Mercado Pago com chave pública de TESTE
+        const MP_PUBLIC_KEY = 'TEST-1ce19553-fcdd-469b-9e00-2bdf113f1035';
 
         let mp;
         let checkout;
@@ -389,22 +389,6 @@
                 showCheckoutError(error.message);
             }
         }
-                    checkoutContainer.innerHTML = '';
-
-                    // Criar checkout com configurações avançadas
-                    checkout = mp.checkout({
-                        preference: {
-                            id: preference.id
-                        },
-                        render: {
-                            container: '#mercadopago-container',
-                            label: 'Pagar Assinatura Q-aura',
-                        },
-                        theme: {
-                            elementsColor: '#2ecc71',
-                            headerColor: '#2ecc71'
-                        }
-                    });
 
         async function createPaymentPreference() {
             try {

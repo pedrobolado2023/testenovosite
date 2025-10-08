@@ -13,14 +13,14 @@ let preferenceAPI = null;
 try {
     const { MercadoPagoConfig, Preference } = require('mercadopago');
     
-    // Configurar com token de produção
-    const accessToken = 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015';
+    // Configurar com token de TESTE primeiro para validar
+    const accessToken = 'TEST-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015';
+    console.log('🔧 Usando credenciais de TESTE para debug');
     
     mpClient = new MercadoPagoConfig({ 
         accessToken: accessToken,
         options: {
-            timeout: 10000,
-            idempotencyKey: 'abc'
+            timeout: 10000
         }
     });
     
