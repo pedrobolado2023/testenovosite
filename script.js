@@ -8,19 +8,17 @@ let checkout;
 
 // Configuração dos planos
 const planos = {
-    concurseiro: {
-        name: 'Plano Concurseiro',
+    qaura: {
+        name: 'Plano Q-aura',
         price: 9.90,
-        description: 'Sistema completo de estudos para concursos',
+        description: 'Sistema completo de estudos para concursos via WhatsApp',
         features: [
-            'Mais de 10.000 questões atualizadas',
-            'Todas as matérias dos principais concursos',
-            'Sistema de estudo via WhatsApp',
-            'Relatórios de desempenho detalhados',
-            'Método científico de memorização',
-            'Questões organizadas por dificuldade',
+            '+10.000 questões atualizadas',
+            'Todas as matérias principais',
+            'Sistema via WhatsApp',
+            'Relatórios de desempenho',
+            'Questões por dificuldade',
             'Suporte especializado',
-            'Atualizações constantes',
             'Acesso ilimitado 24/7'
         ]
     }
@@ -36,7 +34,7 @@ const navMobile = document.querySelector('.nav-mobile');
 const navMenu = document.querySelector('.nav-menu');
 
 // Variável global para o plano selecionado
-let selectedPlan = 'concurseiro'; // Plano padrão
+let selectedPlan = 'qaura'; // Plano padrão
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -76,7 +74,7 @@ function initializeEventListeners() {
     // Botões "Assinar Agora"
     assinarBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            selectPlan('concurseiro'); // Plano padrão
+            selectPlan('qaura'); // Plano padrão
         });
     });
 
