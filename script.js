@@ -148,28 +148,13 @@ function initializeEventListeners() {
 
 // Função para selecionar um plano
 function selectPlan(planKey) {
-    console.log('Selecionando plano:', planKey);
-    selectedPlan = planKey;
-    const plano = planos[planKey];
+    console.log('Redirecionando para checkout:', planKey);
     
-    if (!plano) {
-        console.error('Plano não encontrado:', planKey);
-        showNotification('Plano não encontrado. Redirecionando para WhatsApp...', 'error');
-        setTimeout(() => {
-            redirectToWhatsApp({ name: 'Q-aura', price: 9.90 });
-        }, 2000);
-        return;
-    }
-
-    console.log('Plano encontrado:', plano);
-
-    // Atualizar informações do modal
-    document.getElementById('selected-plan-name').textContent = plano.name;
-    document.getElementById('selected-plan-price').textContent = plano.price;
-
-    // Abrir modal e criar checkout
-    openModal();
-    createCheckout(plano);
+    // Salvar plano selecionado no localStorage
+    localStorage.setItem('selectedPlan', planKey);
+    
+    // Redirecionar para página de checkout
+    window.location.href = '/checkout';
 }
 
 // Função para abrir o modal

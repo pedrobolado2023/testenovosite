@@ -18,6 +18,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Rota para página de checkout
+app.get('/checkout', (req, res) => {
+    res.sendFile(path.join(__dirname, 'checkout.html'));
+});
+
 // Rotas para páginas de retorno do pagamento
 app.get('/sucesso', (req, res) => {
     res.sendFile(path.join(__dirname, 'sucesso.html'));
@@ -40,7 +45,7 @@ app.get('/health', (req, res) => {
     });
 });
 
-// API para criar preferência do Mercado Pago
+// API para criar preferência do Mercado Pago (Checkout Pro)
 app.post('/api/create-preference', async (req, res) => {
     try {
         const { title, unit_price, quantity = 1, description, plan_type } = req.body;
@@ -52,19 +57,66 @@ app.post('/api/create-preference', async (req, res) => {
             });
         }
 
-        // Em um ambiente real, você criaria a preferência aqui
-        // Por enquanto, retorna uma resposta simulada
+        // IMPORTANTE: Para produção, instale o SDK do Mercado Pago
+        // npm install mercadopago
+        // const mercadopago = require('mercadopago');
+        // mercadopago.configure({ access_token: 'SEU_ACCESS_TOKEN' });
+
+        // Estrutura da preferência para Checkout Pro
+        const preferenceData = {
+            items: [
+                {
+                    id: plan_type || 'qaura-plan',
+                    title: title,
+                    description: description,
+                    quantity: quantity,
+                    currency_id: 'BRL',
+                    unit_price: parseFloat(unit_price)
+                }
+            ],
+            payer: {
+                email: 'test@mercadopago.com' // Em produção, capture do formulário
+            },
+            back_urls: {
+                success: `${req.protocol}://${req.get('host')}/sucesso`,
+                failure: `${req.protocol}://${req.get('host')}/falha`,
+                pending: `${req.protocol}://${req.get('host')}/pendente`
+            },
+            auto_return: 'approved',
+            payment_methods: {
+                excluded_payment_methods: [],
+                excluded_payment_types: [],
+                installments: 12
+            },
+            notification_url: `${req.protocol}://${req.get('host')}/api/webhook`,
+            external_reference: `order_${Date.now()}`,
+            expires: false
+        };
+
+        // Em produção, use este código:
+        /*
+        const preference = await mercadopago.preferences.create(preferenceData);
+        
+        res.json({
+            id: preference.body.id,
+            init_point: preference.body.init_point,
+            sandbox_init_point: preference.body.sandbox_init_point
+        });
+        */
+
+        // Por enquanto, simulação para demonstração
         const mockPreference = {
-            id: `demo-${Date.now()}`,
+            id: `preference-${Date.now()}`,
             init_point: `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=demo-${Date.now()}`,
             sandbox_init_point: `https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=demo-${Date.now()}`
         };
 
-        console.log('Preferência criada (simulação):', {
+        console.log('Preferência Checkout Pro criada:', {
             title,
             price: unit_price,
             plan: plan_type,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            preference_id: mockPreference.id
         });
 
         res.json(mockPreference);
