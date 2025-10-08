@@ -13,9 +13,9 @@ let preferenceAPI = null;
 try {
     const { MercadoPagoConfig, Preference } = require('mercadopago');
     
-    // Configurar com token de TESTE primeiro para validar
-    const accessToken = 'TEST-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015';
-    console.log('🔧 Usando credenciais de TESTE para debug');
+    // Configurar com token de produção (suas credenciais reais)
+    const accessToken = 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015';
+    console.log('🔧 Usando credenciais de PRODUÇÃO');
     
     mpClient = new MercadoPagoConfig({ 
         accessToken: accessToken,
@@ -165,11 +165,6 @@ app.post('/api/create-preference', async (req, res) => {
                     unit_price: parseFloat(unit_price)
                 }
             ],
-            payer: {
-                name: 'Cliente',
-                surname: 'Q-aura',
-                email: 'cliente@qaura.com.br'
-            },
             back_urls: {
                 success: `${req.protocol}://${req.get('host')}/sucesso`,
                 failure: `${req.protocol}://${req.get('host')}/falha`,
@@ -183,7 +178,6 @@ app.post('/api/create-preference', async (req, res) => {
             },
             notification_url: `${req.protocol}://${req.get('host')}/api/webhook`,
             external_reference: `qaura_${Date.now()}`,
-            expires: false,
             statement_descriptor: 'Q-AURA ESTUDOS'
         };
 
