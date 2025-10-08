@@ -63,17 +63,22 @@ function initializeMercadoPago() {
 
 // Event Listeners
 function initializeEventListeners() {
+    console.log('Inicializando event listeners...');
+    
     // Botões de planos
     planButtons.forEach(button => {
         button.addEventListener('click', function() {
             const plan = this.getAttribute('data-plan');
+            console.log('Botão de plano clicado:', plan);
             selectPlan(plan);
         });
     });
 
     // Botões "Assinar Agora"
     assinarBtns.forEach(btn => {
+        console.log('Adicionando listener para botão:', btn.id);
         btn.addEventListener('click', function() {
+            console.log('Botão assinar clicado:', this.id);
             selectPlan('qaura'); // Plano padrão
         });
     });
@@ -86,6 +91,8 @@ function initializeEventListeners() {
             });
         });
     }
+
+    console.log(`Event listeners configurados: ${planButtons.length} botões de plano, ${assinarBtns.length} botões assinar`);
 
     // Modal
     if (closeBtn) {
@@ -128,13 +135,20 @@ function initializeEventListeners() {
 
 // Função para selecionar um plano
 function selectPlan(planKey) {
+    console.log('Selecionando plano:', planKey);
     selectedPlan = planKey;
     const plano = planos[planKey];
     
     if (!plano) {
         console.error('Plano não encontrado:', planKey);
+        showNotification('Plano não encontrado. Redirecionando para WhatsApp...', 'error');
+        setTimeout(() => {
+            redirectToWhatsApp({ name: 'Q-aura', price: 9.90 });
+        }, 2000);
         return;
     }
+
+    console.log('Plano encontrado:', plano);
 
     // Atualizar informações do modal
     document.getElementById('selected-plan-name').textContent = plano.name;
@@ -175,6 +189,7 @@ function closeModal() {
 async function createCheckout(plano) {
     if (!mp) {
         showNotification('Sistema de pagamento não disponível', 'error');
+        redirectToWhatsApp(plano);
         return;
     }
 
@@ -209,22 +224,21 @@ async function createCheckout(plano) {
 
     } catch (error) {
         console.error('Erro ao criar checkout:', error);
-        showNotification('Erro ao carregar sistema de pagamento. Tente novamente.', 'error');
+        showNotification('Redirecionando para WhatsApp...', 'info');
         
-        // Mostrar opção alternativa
-        const checkoutContainer = document.getElementById('mercadopago-checkout');
-        checkoutContainer.innerHTML = `
-            <div class="checkout-error">
-                <p>Não foi possível carregar o sistema de pagamento.</p>
-                <p>Entre em contato conosco pelo WhatsApp:</p>
-                <a href="https://wa.me/5562993473656?text=Quero assinar o Concurso Study - Sistema de Questões para Concursos" 
-                   class="btn btn-primary" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    Contatar via WhatsApp
-                </a>
-            </div>
-        `;
+        // Fechar modal e redirecionar para WhatsApp
+        setTimeout(() => {
+            closeModal();
+            redirectToWhatsApp(plano);
+        }, 1500);
     }
+}
+
+// Função para redirecionar para WhatsApp
+function redirectToWhatsApp(plano) {
+    const message = `Olá! Quero assinar o ${plano.name} por R$ ${plano.price}/mês. Como faço para contratar?`;
+    const whatsappUrl = `https://wa.me/5562993473656?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
 }
 
 // Função para criar preferência de pagamento (simulação)

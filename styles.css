@@ -388,7 +388,7 @@ body {
 
 /* Preços */
 .precos {
-    padding: 80px 0;
+    padding: 50px 0;
     background: var(--bg-light);
 }
 
@@ -396,13 +396,13 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 32px;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 .preco-card {
     background: var(--white);
     border-radius: var(--border-radius-lg);
-    padding: 40px 32px;
+    padding: 30px 25px;
     text-align: center;
     position: relative;
     box-shadow: var(--shadow-sm);
@@ -467,15 +467,15 @@ body {
 
 .preco-features {
     list-style: none;
-    margin-bottom: 32px;
+    margin-bottom: 25px;
 }
 
 .preco-features li {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 0;
-    font-size: var(--font-size-base);
+    padding: 6px 0;
+    font-size: var(--font-size-sm);
 }
 
 .preco-features i {
@@ -726,8 +726,8 @@ body {
 }
 
 .preco-card.large {
-    max-width: 500px;
-    padding: 60px 40px;
+    max-width: 450px;
+    padding: 40px 30px;
 }
 
 .preco-destaque {
