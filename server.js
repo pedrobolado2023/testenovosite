@@ -14,18 +14,23 @@ try {
     const { MercadoPagoConfig, Preference } = require('mercadopago');
     
     // Configurar com token de produção
+    const accessToken = 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015';
+    
     mpClient = new MercadoPagoConfig({ 
-        accessToken: 'APP_USR-7784076318930036-092213-cc300b09f44f7942b7eb772a9ad40c6e-142018015',
+        accessToken: accessToken,
         options: {
-            timeout: 10000
+            timeout: 10000,
+            idempotencyKey: 'abc'
         }
     });
     
     preferenceAPI = new Preference(mpClient);
     console.log('✅ Mercado Pago SDK v2 inicializado em PRODUÇÃO');
+    console.log('🔑 Token configurado:', accessToken.substring(0, 20) + '...');
 } catch (error) {
     console.log('❌ Erro ao inicializar MP SDK:', error.message);
     console.log('⚠️ Checkout não funcionará sem MP SDK');
+    console.log('🔍 Detalhes do erro:', error);
 }
 
 // Middlewares
@@ -69,6 +74,54 @@ app.get('/health', (req, res) => {
     });
 });
 
+// Rota de teste do Mercado Pago
+app.get('/api/test-mp', async (req, res) => {
+    try {
+        if (!preferenceAPI) {
+            return res.status(500).json({
+                error: 'Mercado Pago não inicializado',
+                connected: false
+            });
+        }
+
+        // Teste simples - criar preferência básica
+        const testPreference = {
+            items: [{
+                id: 'test',
+                title: 'Teste Q-aura',
+                description: 'Teste de conectividade',
+                quantity: 1,
+                currency_id: 'BRL',
+                unit_price: 0.01
+            }],
+            back_urls: {
+                success: `${req.protocol}://${req.get('host')}/sucesso`,
+                failure: `${req.protocol}://${req.get('host')}/falha`,
+                pending: `${req.protocol}://${req.get('host')}/pendente`
+            }
+        };
+
+        const response = await preferenceAPI.create({
+            body: testPreference
+        });
+
+        res.json({
+            message: 'Mercado Pago conectado com sucesso!',
+            connected: true,
+            test_preference_id: response.id,
+            sdk_version: 'v2'
+        });
+
+    } catch (error) {
+        console.error('Erro no teste MP:', error);
+        res.status(500).json({
+            error: 'Erro ao testar Mercado Pago',
+            message: error.message,
+            connected: false
+        });
+    }
+});
+
 // API para criar preferência do Mercado Pago (Checkout Pro) - 100% REAL
 app.post('/api/create-preference', async (req, res) => {
     try {
@@ -95,7 +148,8 @@ app.post('/api/create-preference', async (req, res) => {
             console.log('❌ SDK do Mercado Pago não disponível');
             return res.status(500).json({ 
                 error: 'Serviço de pagamento indisponível',
-                message: 'Entre em contato via WhatsApp para finalizar'
+                message: 'SDK do Mercado Pago não foi inicializado corretamente',
+                details: 'Verifique as credenciais de acesso'
             });
         }
 
@@ -137,20 +191,31 @@ app.post('/api/create-preference', async (req, res) => {
         console.log('📋 Dados da preferência:', JSON.stringify(preferenceData, null, 2));
 
         // Criar preferência REAL no Mercado Pago
-        const response = await preferenceAPI.create({
-            body: preferenceData
-        });
-        
-        console.log('✅ Preferência REAL criada com sucesso!');
-        console.log('🆔 ID da preferência:', response.id);
-        console.log('🔗 Link de pagamento:', response.init_point);
+        try {
+            const response = await preferenceAPI.create({
+                body: preferenceData
+            });
+            
+            console.log('✅ Preferência REAL criada com sucesso!');
+            console.log('🆔 ID da preferência:', response.id);
+            console.log('🔗 Link de pagamento:', response.init_point);
 
-        return res.json({
-            id: response.id,
-            init_point: response.init_point,
-            sandbox_init_point: response.sandbox_init_point,
-            status: 'production'
-        });
+            return res.json({
+                id: response.id,
+                init_point: response.init_point,
+                sandbox_init_point: response.sandbox_init_point,
+                status: 'production'
+            });
+        } catch (mpError) {
+            console.error('❌ Erro detalhado ao criar preferência:', {
+                message: mpError.message,
+                status: mpError.status,
+                cause: mpError.cause,
+                response: mpError.response?.data
+            });
+            
+            throw new Error(`Erro do Mercado Pago: ${mpError.message}`);
+        }
 
     } catch (error) {
         console.error('❌ Erro ao criar preferência REAL:', error);
