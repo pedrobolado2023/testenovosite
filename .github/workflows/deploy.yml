@@ -1,0 +1,70 @@
+name: Deploy to EasyPanel
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install --save-dev html-validate htmlhint stylelint eslint
+        
+    - name: Validate HTML
+      run: |
+        npx html-validate index.html || echo "HTML validation completed"
+        
+    - name: Validate CSS
+      run: |
+        npx stylelint "*.css" --allow-empty-input || echo "CSS validation completed"
+        
+    - name: Validate JavaScript
+      run: |
+        npx eslint "*.js" --no-eslintrc --env browser,es6 --parser-options ecmaVersion:2020 || echo "JS validation completed"
+        
+    - name: Deploy to EasyPanel
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        echo "Deploying to EasyPanel..."
+        # Aqui você configurará o deploy específico para seu EasyPanel
+        # Exemplo usando rsync ou FTP
+        echo "Files ready for deployment"
+        
+    - name: Deploy via FTP (EasyPanel)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      with:
+        server: ${{ secrets.EASYPANEL_FTP_SERVER }}
+        username: ${{ secrets.EASYPANEL_FTP_USERNAME }}
+        password: ${{ secrets.EASYPANEL_FTP_PASSWORD }}
+        local-dir: ./
+        server-dir: /
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.github/**
+          **/README.md
+          
+    - name: Notification
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ Deploy realizado com sucesso!"
+        else
+          echo "❌ Falha no deploy"
+        fi

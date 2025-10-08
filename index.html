@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema WhatsApp Premium - Assinatura</title>
+    <meta name="description" content="Assine nosso sistema premium para WhatsApp e revolucione seus atendimentos">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Mercado Pago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>WhatsApp Premium</h2>
+                </div>
+                <div class="nav-menu">
+                    <a href="#beneficios" class="nav-link">Benefícios</a>
+                    <a href="#precos" class="nav-link">Preços</a>
+                    <a href="#depoimentos" class="nav-link">Depoimentos</a>
+                    <a href="#contato" class="nav-link">Contato</a>
+                </div>
+                <div class="nav-mobile">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Revolucione seus <span class="highlight">Atendimentos</span> no WhatsApp
+                </h1>
+                <p class="hero-description">
+                    Sistema premium completo para automatizar e otimizar seus atendimentos no WhatsApp. 
+                    Aumente suas vendas e economize tempo com nossa solução profissional.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="assinar-btn">
+                        <i class="fas fa-crown"></i>
+                        Assinar Agora
+                    </button>
+                    <button class="btn btn-secondary" id="saiba-mais-btn">
+                        <i class="fas fa-play"></i>
+                        Ver Demonstração
+                    </button>
+                </div>
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-check"></i>
+                        <span>Suporte 24/7</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check"></i>
+                        <span>Atualizações Gratuitas</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check"></i>
+                        <span>Garantia de 30 dias</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="whatsapp-chat">
+                            <div class="chat-header">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Sistema Automatizado</span>
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            <div class="chat-messages">
+                                <div class="message received">
+                                    <p>Olá! Como posso ajudar?</p>
+                                    <span class="time">14:32</span>
+                                </div>
+                                <div class="message sent">
+                                    <p>Gostaria de saber sobre seus serviços</p>
+                                    <span class="time">14:33</span>
+                                </div>
+                                <div class="message received">
+                                    <p>Perfeito! Aqui estão nossas opções...</p>
+                                    <span class="time">14:33</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section id="beneficios" class="beneficios">
+        <div class="container">
+            <div class="section-header">
+                <h2>Por que escolher nosso sistema?</h2>
+                <p>Descubra os benefícios que vão transformar seus atendimentos</p>
+            </div>
+            <div class="beneficios-grid">
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Automação Inteligente</h3>
+                    <p>Respostas automáticas personalizadas que atendem seus clientes 24/7, aumentando a satisfação e conversões.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Aumento de Vendas</h3>
+                    <p>Sistema otimizado para converter mais leads em vendas, com funis de vendas automatizados e follow-up inteligente.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Economia de Tempo</h3>
+                    <p>Automatize tarefas repetitivas e foque no que realmente importa: fazer seu negócio crescer.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Gestão de Contatos</h3>
+                    <p>Organize e gerencie todos seus contatos com tags, grupos e segmentação inteligente.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Segurança Total</h3>
+                    <p>Seus dados e conversas protegidos com criptografia de ponta e backup automático.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Multiplataforma</h3>
+                    <p>Acesse de qualquer dispositivo: celular, tablet ou computador. Sempre sincronizado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preços -->
+    <section id="precos" class="precos">
+        <div class="container">
+            <div class="section-header">
+                <h2>Planos e Preços</h2>
+                <p>Escolha o plano ideal para seu negócio</p>
+            </div>
+            <div class="precos-grid">
+                <div class="preco-card">
+                    <div class="preco-header">
+                        <h3>Básico</h3>
+                        <div class="preco">
+                            <span class="moeda">R$</span>
+                            <span class="valor">97</span>
+                            <span class="periodo">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="preco-features">
+                        <li><i class="fas fa-check"></i> Até 1.000 mensagens/mês</li>
+                        <li><i class="fas fa-check"></i> Respostas automáticas</li>
+                        <li><i class="fas fa-check"></i> Suporte via chat</li>
+                        <li><i class="fas fa-check"></i> 1 usuário</li>
+                    </ul>
+                    <button class="btn btn-outline" data-plan="basic">Escolher Plano</button>
+                </div>
+                
+                <div class="preco-card featured">
+                    <div class="badge">Mais Popular</div>
+                    <div class="preco-header">
+                        <h3>Profissional</h3>
+                        <div class="preco">
+                            <span class="moeda">R$</span>
+                            <span class="valor">197</span>
+                            <span class="periodo">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="preco-features">
+                        <li><i class="fas fa-check"></i> Mensagens ilimitadas</li>
+                        <li><i class="fas fa-check"></i> Automação avançada</li>
+                        <li><i class="fas fa-check"></i> Suporte prioritário</li>
+                        <li><i class="fas fa-check"></i> Até 5 usuários</li>
+                        <li><i class="fas fa-check"></i> Relatórios detalhados</li>
+                        <li><i class="fas fa-check"></i> Integração com CRM</li>
+                    </ul>
+                    <button class="btn btn-primary" data-plan="professional">Assinar Agora</button>
+                </div>
+                
+                <div class="preco-card">
+                    <div class="preco-header">
+                        <h3>Enterprise</h3>
+                        <div class="preco">
+                            <span class="moeda">R$</span>
+                            <span class="valor">397</span>
+                            <span class="periodo">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="preco-features">
+                        <li><i class="fas fa-check"></i> Tudo do Profissional</li>
+                        <li><i class="fas fa-check"></i> Usuários ilimitados</li>
+                        <li><i class="fas fa-check"></i> API personalizada</li>
+                        <li><i class="fas fa-check"></i> Gerente dedicado</li>
+                        <li><i class="fas fa-check"></i> Treinamento incluso</li>
+                        <li><i class="fas fa-check"></i> White label</li>
+                    </ul>
+                    <button class="btn btn-outline" data-plan="enterprise">Escolher Plano</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="depoimentos">
+        <div class="container">
+            <div class="section-header">
+                <h2>O que nossos clientes dizem</h2>
+                <p>Histórias reais de sucesso</p>
+            </div>
+            <div class="depoimentos-slider">
+                <div class="depoimento">
+                    <div class="depoimento-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Aumentei minhas vendas em 300% em apenas 2 meses. O sistema é incrível!"</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">
+                                <span>MC</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Maria Clara</h4>
+                                <span>Loja de Roupas Online</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="depoimento">
+                    <div class="depoimento-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Economia de 6 horas por dia! Agora posso focar em estratégias de crescimento."</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">
+                                <span>JS</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>João Silva</h4>
+                                <span>Consultor de Marketing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="depoimento">
+                    <div class="depoimento-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Suporte excepcional e resultados incríveis. Recomendo para todos!"</p>
+                        <div class="depoimento-author">
+                            <div class="author-avatar">
+                                <span>AF</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Ana Ferreira</h4>
+                                <span>Empresária</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-final">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto para revolucionar seus atendimentos?</h2>
+                <p>Junte-se a mais de 10.000 empresários que já transformaram seus negócios</p>
+                <button class="btn btn-primary btn-large" id="cta-final-btn">
+                    <i class="fas fa-rocket"></i>
+                    Começar Agora - 30 Dias Grátis
+                </button>
+                <div class="garantia">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Garantia de satisfação de 30 dias ou seu dinheiro de volta</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>WhatsApp Premium</h3>
+                    <p>Automatize, otimize e cresça com nosso sistema premium para WhatsApp.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Produto</h4>
+                    <ul>
+                        <li><a href="#beneficios">Funcionalidades</a></li>
+                        <li><a href="#precos">Preços</a></li>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Status do Sistema</a></li>
+                        <li><a href="#">Tutoriais</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Imprensa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 WhatsApp Premium. Todos os direitos reservados.</p>
+                <div class="footer-links">
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Pagamento -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Finalizar Assinatura</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <div class="plan-selected">
+                        <h4 id="selected-plan-name">Plano Profissional</h4>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span id="selected-plan-price">197</span>
+                            <span class="period">/mês</span>
+                        </div>
+                    </div>
+                    <div class="payment-form">
+                        <div id="mercadopago-checkout"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

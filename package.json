@@ -1,0 +1,53 @@
+{
+  "name": "whatsapp-premium-site",
+  "version": "1.0.0",
+  "description": "Site de vendas para sistema WhatsApp Premium com integração Mercado Pago",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server --port=3000 --open=/index.html",
+    "validate": "npm run validate:html && npm run validate:css && npm run validate:js",
+    "validate:html": "npx html-validate index.html",
+    "validate:css": "npx stylelint \"*.css\"",
+    "validate:js": "npx eslint \"*.js\" --no-eslintrc --env browser,es6 --parser-options ecmaVersion:2020",
+    "build": "echo 'Building static site...' && npm run validate",
+    "deploy": "echo 'Deploy será feito via GitHub Actions'",
+    "dev": "npx live-server --port=3000 --open=/index.html --watch=index.html,styles.css,script.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "sistema",
+    "assinatura",
+    "mercado-pago",
+    "landing-page",
+    "easypanel",
+    "github-actions"
+  ],
+  "author": "Pedro Bolado",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedrobolado2023/testenovosite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pedrobolado2023/testenovosite/issues"
+  },
+  "homepage": "https://github.com/pedrobolado2023/testenovosite#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "html-validate": "^8.0.0",
+    "live-server": "^1.2.2",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^34.0.0"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
