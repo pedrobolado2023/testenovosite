@@ -33,14 +33,24 @@ const saibaMaisBtn = document.getElementById('saiba-mais-btn');
 const navMobile = document.querySelector('.nav-mobile');
 const navMenu = document.querySelector('.nav-menu');
 
+// Elementos do Pop-up Promocional
+const promoPopup = document.getElementById('promo-popup');
+const promoCloseBtn = document.getElementById('promo-close');
+const promoCTABtn = document.getElementById('promo-cta-btn');
+
 // Variável global para o plano selecionado
 let selectedPlan = 'qaura'; // Plano padrão
+
+// Variáveis de controle do pop-up
+let promoTimer = null;
+let promoShown = false;
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     initializeMercadoPago();
     initializeEventListeners();
     initializeAnimations();
+    initializePromoPopup();
 });
 
 // Função para inicializar o Mercado Pago
@@ -70,6 +80,7 @@ function initializeEventListeners() {
         button.addEventListener('click', function() {
             const plan = this.getAttribute('data-plan');
             console.log('Botão de plano clicado:', plan);
+            cancelPromoTimer(); // Cancelar timer se usuário interagir
             selectPlan(plan);
         });
     });
@@ -79,6 +90,7 @@ function initializeEventListeners() {
         console.log('Adicionando listener para botão:', btn.id);
         btn.addEventListener('click', function() {
             console.log('Botão assinar clicado:', this.id);
+            cancelPromoTimer(); // Cancelar timer se usuário interagir
             selectPlan('qaura'); // Plano padrão
         });
     });
@@ -86,6 +98,7 @@ function initializeEventListeners() {
     // Botão "Saiba Mais"
     if (saibaMaisBtn) {
         saibaMaisBtn.addEventListener('click', function() {
+            cancelPromoTimer(); // Cancelar timer se usuário interagir
             document.getElementById('beneficios').scrollIntoView({
                 behavior: 'smooth'
             });
@@ -601,6 +614,93 @@ const additionalStyles = `
 // Adicionar estilos ao head
 document.head.insertAdjacentHTML('beforeend', additionalStyles);
 
+// Função para inicializar o pop-up promocional
+function initializePromoPopup() {
+    // Verificar se o pop-up já foi mostrado hoje
+    const today = new Date().toDateString();
+    const lastShown = localStorage.getItem('promoPopupLastShown');
+    
+    if (lastShown === today) {
+        console.log('Pop-up já foi mostrado hoje');
+        return;
+    }
+
+    // Configurar timer para mostrar pop-up após 15 segundos
+    promoTimer = setTimeout(() => {
+        if (!promoShown) {
+            showPromoPopup();
+        }
+    }, 15000); // 15 segundos
+
+    // Event listeners do pop-up
+    if (promoCloseBtn) {
+        promoCloseBtn.addEventListener('click', closePromoPopup);
+    }
+
+    if (promoCTABtn) {
+        promoCTABtn.addEventListener('click', function() {
+            trackEvent('promo_popup_cta_clicked');
+            closePromoPopup();
+            selectPlan('qaura');
+        });
+    }
+
+    // Fechar pop-up clicando no overlay
+    if (promoPopup) {
+        promoPopup.addEventListener('click', function(e) {
+            if (e.target === promoPopup) {
+                closePromoPopup();
+            }
+        });
+    }
+
+    // Fechar pop-up com tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && promoShown) {
+            closePromoPopup();
+        }
+    });
+}
+
+// Função para mostrar o pop-up promocional
+function showPromoPopup() {
+    if (promoShown || !promoPopup) return;
+
+    console.log('Exibindo pop-up promocional');
+    promoShown = true;
+    promoPopup.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    // Marcar como mostrado hoje
+    const today = new Date().toDateString();
+    localStorage.setItem('promoPopupLastShown', today);
+    
+    // Tracking
+    trackEvent('promo_popup_shown');
+}
+
+// Função para fechar o pop-up promocional
+function closePromoPopup() {
+    if (!promoPopup) return;
+
+    console.log('Fechando pop-up promocional');
+    promoPopup.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    promoShown = false;
+    
+    // Tracking
+    trackEvent('promo_popup_closed');
+}
+
+// Função para cancelar o timer do pop-up (se usuário interagir antes)
+function cancelPromoTimer() {
+    if (promoTimer) {
+        clearTimeout(promoTimer);
+        promoTimer = null;
+        console.log('Timer do pop-up cancelado');
+    }
+}
+
 // Exportar funções principais para uso global
 window.WhatsAppPremium = {
     selectPlan,
@@ -608,5 +708,7 @@ window.WhatsAppPremium = {
     closeModal,
     shareOnSocial,
     trackEvent,
-    showNotification
+    showNotification,
+    showPromoPopup,
+    closePromoPopup
 };
