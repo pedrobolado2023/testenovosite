@@ -14,9 +14,11 @@
 
 1. **Acesse seu painel EasyPanel**
 2. **Crie uma nova aplicação**:
-   - Tipo: `Static Site` ou `Node.js App`
+   - Tipo: `Node.js App` (não Static Site)
    - Nome: `whatsapp-premium-site`
    - Domínio: `estude.q-aura.com.br`
+   - Build Command: `npm run build`
+   - Start Command: `npm start` (ou `node server.js`)
 
 ### 2. Configurar Deploy via GitHub
 
@@ -95,7 +97,16 @@ Se preferir separar frontend e backend:
 1. **Frontend**: Deploy atual no EasyPanel
 2. **Backend**: Deploy separado em subdomínio ou serviço
 
-### 6. Testar Pagamentos
+### 6. Testar Funcionamento
+
+1. **Acesse o site**: `https://estude.q-aura.com.br`
+2. **Teste health check**: `https://estude.q-aura.com.br/health`
+3. **Teste páginas de retorno**:
+   - `https://estude.q-aura.com.br/sucesso`
+   - `https://estude.q-aura.com.br/pendente` 
+   - `https://estude.q-aura.com.br/falha`
+
+### 7. Testar Pagamentos
 
 1. **Teste com cartão de teste**:
    ```
