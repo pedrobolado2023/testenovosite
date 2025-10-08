@@ -8,41 +8,20 @@ let checkout;
 
 // Configuração dos planos
 const planos = {
-    basic: {
-        name: 'Plano Básico',
-        price: 97,
-        description: 'Até 1.000 mensagens/mês',
+    concurseiro: {
+        name: 'Plano Concurseiro',
+        price: 9.90,
+        description: 'Sistema completo de estudos para concursos',
         features: [
-            'Até 1.000 mensagens/mês',
-            'Respostas automáticas',
-            'Suporte via chat',
-            '1 usuário'
-        ]
-    },
-    professional: {
-        name: 'Plano Profissional',
-        price: 197,
-        description: 'Mensagens ilimitadas',
-        features: [
-            'Mensagens ilimitadas',
-            'Automação avançada',
-            'Suporte prioritário',
-            'Até 5 usuários',
-            'Relatórios detalhados',
-            'Integração com CRM'
-        ]
-    },
-    enterprise: {
-        name: 'Plano Enterprise',
-        price: 397,
-        description: 'Solução completa',
-        features: [
-            'Tudo do Profissional',
-            'Usuários ilimitados',
-            'API personalizada',
-            'Gerente dedicado',
-            'Treinamento incluso',
-            'White label'
+            'Mais de 10.000 questões atualizadas',
+            'Todas as matérias dos principais concursos',
+            'Sistema de estudo via WhatsApp',
+            'Relatórios de desempenho detalhados',
+            'Método científico de memorização',
+            'Questões organizadas por dificuldade',
+            'Suporte especializado',
+            'Atualizações constantes',
+            'Acesso ilimitado 24/7'
         ]
     }
 };
@@ -57,7 +36,7 @@ const navMobile = document.querySelector('.nav-mobile');
 const navMenu = document.querySelector('.nav-menu');
 
 // Variável global para o plano selecionado
-let selectedPlan = 'professional'; // Plano padrão
+let selectedPlan = 'concurseiro'; // Plano padrão
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -97,7 +76,7 @@ function initializeEventListeners() {
     // Botões "Assinar Agora"
     assinarBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            selectPlan('professional'); // Plano padrão
+            selectPlan('concurseiro'); // Plano padrão
         });
     });
 
@@ -240,7 +219,7 @@ async function createCheckout(plano) {
             <div class="checkout-error">
                 <p>Não foi possível carregar o sistema de pagamento.</p>
                 <p>Entre em contato conosco pelo WhatsApp:</p>
-                <a href="https://wa.me/5562993473656?text=Quero assinar o ${plano.name}" 
+                <a href="https://wa.me/5562993473656?text=Quero assinar o Concurso Study - Sistema de Questões para Concursos" 
                    class="btn btn-primary" target="_blank">
                     <i class="fab fa-whatsapp"></i>
                     Contatar via WhatsApp

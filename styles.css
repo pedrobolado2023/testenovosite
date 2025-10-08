@@ -566,6 +566,36 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--white);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-final::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+    opacity: 0.1;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-urgency {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px 24px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    animation: pulse 2s infinite;
 }
 
 .cta-content h2 {
@@ -580,15 +610,168 @@ body {
     opacity: 0.9;
 }
 
+.cta-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 32px;
+}
+
+.benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.benefit i {
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 50%;
+    margin-bottom: 4px;
+}
+
 .cta-final .btn-primary {
     background: var(--white);
     color: var(--primary-color);
     font-size: var(--font-size-lg);
-    padding: 16px 32px;
+    padding: 18px 36px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-final .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.cta-final .btn-primary:hover::before {
+    left: 100%;
 }
 
 .cta-final .btn-primary:hover {
     background: var(--gray-100);
+    transform: translateY(-2px);
+}
+
+.cta-price-highlight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.old-price {
+    font-size: var(--font-size-sm);
+    opacity: 0.7;
+    text-decoration: line-through;
+    margin-bottom: 4px;
+}
+
+.new-price {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: #ffd700;
+    margin-bottom: 4px;
+}
+
+.economy {
+    background: #ff4444;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.social-proof {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 32px;
+}
+
+.proof-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.proof-item strong {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: #ffd700;
+}
+
+.proof-item span {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+}
+
+/* Plano único */
+.precos-grid.single-plan {
+    display: flex;
+    justify-content: center;
+}
+
+.preco-card.large {
+    max-width: 500px;
+    padding: 60px 40px;
+}
+
+.preco-destaque {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.centavos {
+    font-size: var(--font-size-2xl);
+    vertical-align: top;
+}
+
+.urgencia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+/* Animações */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(37, 211, 102, 0.6); }
+}
+
+.btn-primary.pulse:hover {
+    animation: glow 1s infinite;
 }
 
 .garantia {
@@ -849,6 +1032,10 @@ body {
         transform: translateY(-8px);
     }
     
+    .preco-card.large {
+        padding: 40px 20px;
+    }
+    
     .depoimentos-slider {
         grid-template-columns: 1fr;
         gap: 24px;
@@ -868,6 +1055,16 @@ body {
     
     .cta-content h2 {
         font-size: var(--font-size-2xl);
+    }
+    
+    .cta-benefits {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .social-proof {
+        flex-direction: column;
+        gap: 20px;
     }
     
     .section-header h2 {
@@ -910,6 +1107,10 @@ body {
         padding: 32px 20px;
     }
     
+    .preco-card.large {
+        padding: 32px 16px;
+    }
+    
     .depoimento {
         padding: 24px 16px;
     }
@@ -921,6 +1122,23 @@ body {
     .modal-header,
     .modal-body {
         padding: 20px;
+    }
+    
+    .cta-benefits {
+        gap: 16px;
+    }
+    
+    .benefit {
+        font-size: var(--font-size-xs);
+    }
+    
+    .social-proof {
+        gap: 16px;
+    }
+    
+    .cta-urgency {
+        padding: 8px 16px;
+        font-size: var(--font-size-sm);
     }
 }
 
