@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problema no Pagamento - WhatsApp Premium</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="failure-page">
+        <div class="container">
+            <div class="failure-content">
+                <div class="failure-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h1>❌ Problema no Pagamento</h1>
+                <p>Infelizmente, não conseguimos processar seu pagamento.</p>
+                
+                <div class="failure-details">
+                    <div class="detail-card">
+                        <h3>🔍 Possíveis Causas</h3>
+                        <ul>
+                            <li>Dados do cartão incorretos</li>
+                            <li>Limite insuficiente</li>
+                            <li>Cartão bloqueado ou vencido</li>
+                            <li>Problema temporário no processador</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3>💡 O que fazer?</h3>
+                        <ol>
+                            <li>Verifique os dados do cartão</li>
+                            <li>Confirme limite disponível</li>
+                            <li>Tente outro cartão</li>
+                            <li>Entre em contato conosco</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="failure-actions">
+                    <a href="index.html#precos" class="btn btn-primary">
+                        <i class="fas fa-redo"></i>
+                        Tentar Novamente
+                    </a>
+                    <a href="https://wa.me/5562993473656?text=Olá! Tive problemas com o pagamento. Podem me ajudar?" 
+                       class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Falar com Suporte
+                    </a>
+                </div>
+                
+                <div class="alternative-payment">
+                    <h3>💳 Formas de Pagamento Alternativas</h3>
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <i class="fas fa-qrcode"></i>
+                            <span>PIX Instantâneo</span>
+                        </div>
+                        <div class="payment-option">
+                            <i class="fas fa-barcode"></i>
+                            <span>Boleto Bancário</span>
+                        </div>
+                        <div class="payment-option">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Cartão de Débito</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-box">
+                    <i class="fas fa-headset"></i>
+                    <div>
+                        <strong>Precisa de ajuda?</strong> Nossa equipe está disponível 24/7 para 
+                        resolver qualquer problema com pagamento. Entre em contato via WhatsApp!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .failure-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .failure-content {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 700px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .failure-icon {
+            font-size: 80px;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+        
+        .failure-content h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .failure-content > p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+        
+        .failure-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .detail-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: left;
+        }
+        
+        .detail-card h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .detail-card ul,
+        .detail-card ol {
+            margin: 0;
+            padding-left: 20px;
+            color: #5d6d7e;
+        }
+        
+        .detail-card li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .failure-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .alternative-payment {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .alternative-payment h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        
+        .payment-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e3e3e3;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: #25D366;
+            transform: translateY(-2px);
+        }
+        
+        .payment-option i {
+            font-size: 2rem;
+            color: #25D366;
+        }
+        
+        .payment-option span {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .help-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            color: #0c5460;
+        }
+        
+        .help-box i {
+            color: #17a2b8;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .failure-content {
+                padding: 40px 20px;
+            }
+            
+            .failure-content h1 {
+                font-size: 2rem;
+            }
+            
+            .failure-details {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .failure-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
